@@ -1,0 +1,151 @@
+".text.xml:not(.source)":
+
+  "Magento 2 ACL XML":
+    "prefix": "2magento acl xml"
+    "body": '''
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+               $0
+            </resource>
+        </resources>
+    </acl>
+</config>
+'''
+
+  "Magento 2 Config XML":
+    "prefix": "2magento config xml"
+    "body": '''
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        $0
+    </default>
+</config>
+'''
+
+  "Magento 2 DI XML":
+    "prefix": "2magento di xml"
+    "body": '''
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+   $0
+</config>
+'''
+
+  "Magento 2 Events XML":
+    "prefix": "2magento events xml"
+    "body": '''
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="${1:eventName}">
+        <observer name="${2:prefix}$_${1:eventName}" instance="${3:VendorName}\${4:ModuleName}\Observer\${5:ClassName}" />
+    </event>
+</config>
+'''
+
+  "Magento 2 Email Templates XML":
+    "prefix": "2magento email_templates xml"
+    "body": '''
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="${1:lowerVendorname}_${2:lowerModulename}_email_${3:copyEmailname}_template" label="${4:module}" file="${5:emailname}.html" type="text" module="${6:VendorName}_${7:ModuleName}" area="adminhtml"/>
+</config>
+'''
+
+  "Magento 2 Layout XML":
+    "prefix": "2magento layout xml"
+    "body": '''
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="$layout$" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        $0
+    </body>
+</page>
+'''
+
+  "Magento 2 Menu XML":
+    "prefix": "2magento menu xml"
+    "body": '''
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        $0
+    </menu>
+</config>
+'''
+
+  "Magento 2 Module XML":
+    "prefix": "2magento module xml"
+    "body": '''
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+    <module name="${1:VendorName}_${2:ModuleName}" setup_version="0.0.1">
+        $0
+    </module>
+</config>
+'''
+
+  "Magento 2 Routes XML":
+    "prefix": "2magento routes xml"
+    "body": '''
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
+    <router id="${1:type}"> <!-- standard or admin -->
+        <route id="${2:name}" frontName="${2:name}">
+            <module name="${3:VendorName}_${4:ModuleName}" />
+        </route>
+    </router>
+</config>
+'''
+
+  "Magento 2 System XML":
+    "prefix": "2magento system xml"
+    "body": '''
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        $0
+    </system>
+</config>
+'''
+
+  "Magento 2 View XML":
+    "prefix": "2magento view xml"
+    "body": '''
+<?xml version="1.0" encoding="UTF-8"?>
+<view xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Config/etc/view.xsd">
+    $0
+</view>
+'''
+
+  "Magento 2 WebAPI XML":
+    "prefix": "2magento webapi xml"
+    "body": '''
+<?xml version="1.0" encoding="UTF-8"?>
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <route url="/V1/${1:subpath}/${2:methodUrl}" method="PUT">
+        <service class="${3:VendorName}\${4:ModuleName}\Api\${5:api}Interface" method="${6:method}"/>
+        <resources>
+            <resource ref="anonymous"/>
+        </resources>
+    </route>
+</routes>
+'''
+
+  "Magento 2 Widget XML":
+    "prefix": "2magento widget xml"
+    "body": '''
+<?xml version="1.0" encoding="UTF-8"?>
+<widgets xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Widget:etc/widget.xsd">
+    <widget id="${1:widgetId}" class="${2:class}">
+        <label translate="true">${3:label}</label>
+        <description>${4:description}</description>
+        <parameters>
+            $0
+        </parameters>
+    </widget>
+</widgets>
+'''

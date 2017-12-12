@@ -1,0 +1,9 @@
+".text.php:not(.source)":
+
+  "Debug with Zend Framework":
+    "prefix": "zdd"
+    "body": """\Zend_Debug::dump(${1:$thing_to_debug}, '${2:$label$}');$3"""
+
+  "Debug in traditional var_dump & die":
+    "prefix": "dd"
+    "body": """var_dump(${1:$thing_to_debug});die('EOL')$2"""

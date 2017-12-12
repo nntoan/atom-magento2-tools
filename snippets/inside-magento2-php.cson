@@ -1,0 +1,422 @@
+".text.php:not(.source)":
+
+  "Magento 2 Add Table Column":
+    "prefix": "2magento add column"
+    "body": """
+$setup->getConnection()->addColumn(
+    $setup->getTable('${1:tableName}'),
+    '${2:columnName}',
+    [
+        'type' => Table::TYPE_${3:type},
+        'length' => null,
+        'nullable' => true,
+        'default' => '${4:default}',
+        'comment' => '${2:columnName}',
+    ]
+);
+"""
+
+  "Magento 2 Admin Menu Active":
+    "prefix": "2magento admin menu active"
+    "body": """
+$resultPage->setActiveMenu('${1:menu}')
+    ->addBreadcrumb(__('${2:breadcrum1}'), __('${2:breadcrum1}'))
+    ->addBreadcrumb(__('${3:breadcrum2}'), __('${3:breadcrum2}'));
+$resultPage->getConfig()->getTitle()->prepend(__('${4:title}'));
+"""
+
+  "Magento 2 Config Get":
+    "prefix": "2magento config get"
+    "body": """
+/** @var \Magento\Framework\App\Config\ScopeConfigInterface $this->scopeConfig **/
+$this->scopeConfig->getValue(${1:path}, \Magento\Store\Model\ScopeInterface::SCOPE_STORE);
+"""
+
+  "Magento 2 Config Save":
+    "prefix": "2magento config save"
+    "body": """
+/** @var \Magento\Config\Model\ResourceModel\Config $this->config **/
+$this->config->saveConfig('${1:path}', ${2:value}, 'default', 0);
+"""
+
+  "Magento 2 Current Dates Collection Function":
+    "prefix": "2magento current dates collection fn"
+    "body": """
+/**
+ * Set Filters to get current entries from collection
+ */
+private function setCurrentDatesFilterCollection()
+{
+    $currentDate = $this->dateTime->formatDate(true);
+    $this->${1:collection}->addFieldToFilter('is_active', 1)
+        ->addAttributeToSelect(['date_from', 'date_to'], 'left') // VERY IMPORTANT: this is needed if we want the filter to properly work for those new where dates are not specify
+        ->addFieldToFilter('date_from', [['lteq' => $currentDate], ['null' => 'this_value_doesnt_matter']], 'left')
+        ->addFieldToFilter('date_to', [['gteq' => $currentDate], ['null' => 'this_value_doesnt_matter']], 'left');
+}
+$2
+"""
+
+  "Magento 2 Customer Add Attribute":
+    "prefix": "2magento customer add attribute"
+    "body": """
+/** @var CustomerSetup $customerSetup */
+$this->customerSetup = $this->customerSetupFactory->create(['setup' => $setup]);
+
+$this->customerSetup->addAttribute(
+    \Magento\Customer\Model\Customer::ENTITY,
+    $attributeCode,
+    [
+        'type' => ${1:type}, //varchar, int, text, datetime, decimal, static
+        'label' => ${2:label},
+        'input' => ${3:input}, //text, select, textarea, date, hidden
+        'required' => ${4:required}, //true, false
+        'sort_order' => ${5:sortOrder},
+        'visible' => true,
+        'user_defined' => 0,
+        'system' => false,
+        'is_used_in_grid' => false,
+        //'source' => Vendor\Package\...,
+    ]
+);
+$attribute = $this->customerSetup->getEavConfig()->getAttribute(\Magento\Customer\Model\Customer::ENTITY, $attributeCode);
+$forms = ['adminhtml_customer'];
+if ($showOnFrontend) {
+    $forms = [
+        'adminhtml_customer',
+        'customer_account_create',
+        'customer_account_edit',
+        'checkout_register',
+        'adminhtml_checkout',
+    ];
+}
+$attribute->setData('used_in_forms', $forms);
+$attribute->save(); //@codingStandardsIgnoreLine
+"""
+
+  "Magento 2 EAV Attribute Product":
+    "prefix": "2magento eav attribute product"
+    "body": """
+/**
+ * Add attributes to the eav/attribute
+ */
+$eavSetup->addAttribute(
+    \Magento\Catalog\Model\Product::ENTITY,
+    '${1:attribute_code}',
+    [
+        'type' => '${2:type}',
+        'backend' => '',
+        'frontend' => '',
+        'label' => '${3:label}',
+        'input' => '',
+        'class' => '',
+        'source' => '',
+        'global' => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_GLOBAL,
+        'visible' => true,
+        'required' => false,
+        'user_defined' => false,
+        'default' => 0,
+        'searchable' => false,
+        'filterable' => false,
+        'comparable' => false,
+        'visible_on_front' => false,
+        'used_in_product_listing' => true,
+        'unique' => false,
+        'apply_to' => '',
+        'is_used_in_grid' => true,
+        'is_visible_in_grid' => false,
+        'is_filterable_in_grid' => true,
+    ]
+);
+$0
+"""
+
+  "Magento 2 EAV Date Attribute":
+    "prefix": "2magento eav date attribute"
+    "body": """
+$attributes['${1:fieldName}'] = [
+    'type' => 'datetime',
+    'label' => '${2:capitalizedFieldName}',
+    'input' => 'date',
+    'backend' => 'Magento\Eav\Model\Entity\Attribute\Backend\Datetime',
+    'required' => ${3:required}, //true/false
+    'sort_order' => ${4:position},
+    'global' => ScopedAttributeInterface::${5:scope},
+    'group' => 'General',
+    'validate_rules' => 'a:1:{s:16:"input_validation";s:4:"date";}',
+];
+
+$0
+"""
+
+  "Magento 2 EAV Image Attribute":
+    "prefix": "2magento eav image attribute"
+    "body": """
+$attributes['${1:fieldName}'] = [
+    'type' => 'datetime',
+    'label' => '${2:capitalizedFieldName}',
+    'input' => 'date',
+    'backend' => '${3:VendorNane}\${4:PackageName}\Model\Attribute\Backend\Image',
+    'required' => ${5:required}, //true/false
+    'sort_order' => ${6:position},
+    'global' => ScopedAttributeInterface::${7:scope},
+    'group' => 'General',
+];
+
+$0
+"""
+
+  "Magento 2 EAV Static Attribute":
+    "prefix": "2magento eav static attribute"
+    "body": """
+$attributes['${1:fieldName}'] = [
+    'type' => 'static',
+    'label' => '${2:capitalizedFieldName}',
+    'input' => 'text',
+    'required' => ${3:required}, //true/false
+    'sort_order' => ${4:position},
+    'global' => ScopedAttributeInterface::SCOPE_GLOBAL,
+    'group' => 'General',
+    //'validate_rules' => 'a:2:{s:15:"max_text_length";i:255;s:15:"min_text_length";i:1;}',
+];
+
+$0
+"""
+
+  "Magento 2 EAV Text Attribute":
+    "prefix": "2magento eav text attribute"
+    "body": """
+$attributes['${1:fieldName}'] = [
+    'type' => 'varchar',
+    'label' => '${2:capitalizedFieldName}',
+    'input' => 'text',
+    'required' => ${3:required}, //true/false
+    'sort_order' => ${4:position},
+    'global' => ScopedAttributeInterface::${5:scope},
+    'group' => 'General',
+    //'validate_rules' => 'a:2:{s:15:"max_text_length";i:255;s:15:"min_text_length";i:1;}',
+];
+
+$0
+"""
+
+  "Magento 2 EAV Textarea Attribute":
+    "prefix": "2magento eav textarea attribute"
+    "body": """
+$attributes['${1:fieldName}'] = [
+    'type' => 'text',
+    'label' => '${2:capitalizedFieldName}',
+    'input' => 'textarea',
+    'required' => ${3:required}, //true/false
+    'sort_order' => ${4:position},
+    'global' => ScopedAttributeInterface::${5:scope},
+    'group' => 'General',
+    'wysiwyg_enabled' => true,
+];
+
+$0
+"""
+
+  "Magento 2 PHPCS Ignore Block":
+    "prefix": "2magento phpcs ignore block"
+    "body": """
+//@codingStandardsIgnoreStart
+$0
+//@codingStandardsIgnoreEnd
+"""
+
+  "Magento 2 PHPCS Ignore Line":
+    "prefix": "2magento phpcs ignore line"
+    "body": """
+//@codingStandardsIgnoreLine$0
+"""
+
+  "Magento 2 PHPMD SuppressWarnings":
+    "prefix": "2magento phpmd suppress warnings"
+    "body": """
+@SuppressWarnings(PHPMD.${1:warning}) // https://phpmd.org/rules/index.html$0
+"""
+
+  "Magento 2 Plugin After":
+    "prefix": "2magento plugin after"
+    "body": """
+public function after${1:CapitalizedMethodName}(${2:subjectClass} $subject, $result)
+{
+    // Do something and return the customised result
+    $0
+
+    return $result;
+}
+"""
+
+  "Magento 2 Plugin Around":
+    "prefix": "2magento plugin around"
+    "body": """
+public function around${1:CapitalizedMethodName}(${2:subjectClass} $subject, \Closure $proceed)
+{
+    $this->doSmthBefore();
+
+    $result = $proceed();
+
+    $this->doSmthAfter();
+
+    $0
+    return $result;
+}
+"""
+
+  "Magento 2 Plugin Before":
+    "prefix": "2magento plugin before"
+    "body": """
+public function before${1:CapitalizedMethodName}(${2:subjectClass} $subject, $param1, $param2)
+{
+    // return array of modified arguments
+    return [$param1, $param2]$0;
+}
+"""
+
+  "Magento 2 Setup Order Quote Field":
+    "prefix": "2magento setup order quote field"
+    "body": """
+//        @todo: move in top of the class
+//        /**
+//         * @var \Magento\Sales\Setup\SalesSetupFactory
+//         */
+//        private $salesSetupFactory;
+//        /**
+//         * @var \Magento\Quote\Setup\QuoteSetupFactory
+//         */
+//        private $quoteSetupFactory;
+//
+//        public function __construct(
+//            \Magento\Sales\Setup\SalesSetupFactory $salesSetupFactory,
+//            \Magento\Quote\Setup\QuoteSetupFactory $quoteSetupFactory
+//        ) {
+//            $this->salesSetupFactory = $salesSetupFactory;
+//            $this->quoteSetupFactory = $quoteSetupFactory;
+//        }
+
+/** @var \Magento\Quote\Setup\QuoteSetup $quoteSetup */
+$quoteSetup = $this->quoteSetupFactory->create();
+$quoteSetup->addAttribute(
+    '${1:quoteEntityType}',
+    '${2:fieldname}',
+    ['type' => \Magento\Framework\DB\Ddl\Table::${3:type}, 'length' => $length$, 'nullable' => true, 'comment' => 'Quote ${2:fieldname}']
+);
+/** @var \Magento\Sales\Setup\SalesSetup $salesSetup */
+$salesSetup = $this->salesSetupFactory->create();
+$salesSetup->addAttribute(
+    '${1:orderEntityType}',
+    '${2:fieldname}',
+    ['type' => \Magento\Framework\DB\Ddl\Table::${3:type}, 'length' => $length$, 'nullable' => true, 'grid' => false, 'comment' => 'Order ${2:fieldname}']
+);
+
+//        @todo: Add into module.xml
+//        <sequence>
+//            <module name="Magento_Quote"/>
+//            <module name="Magento_Sales"/>
+//        </sequence>
+"""
+
+  "Magento 2 Table Add Column":
+    "prefix": "2magento table add column"
+    "body": """
+$table->addColumn(
+    '${1:fieldName}',
+    Table::TYPE_${2:type},
+    null,
+    ['nullable' => true, 'default' => '${3:defaultValue}'],
+    '${1:fieldName}'
+);
+
+$0
+"""
+
+  "Magento 2 Table Foreign Key":
+    "prefix": "2magento table foreignKey"
+    "body": """
+$table->addColumn(
+    '${1:currentId}',
+    Table::TYPE_${2:type},
+    null,
+    ['nullable' => false, 'primary' => true],
+    'Foreign Key ${1:currentId}'
+)->addForeignKey(
+    $setup->getFkName('${3:currentTable}', '${1:currentId}', '${4:foreignTable}', '${5:foreignId}'),
+    '${1:currentId}',
+    $setup->getTable('${4:foreignTable}'),
+    '${5:foreignId}',
+    Table::ACTION_${6:actionType}
+);
+
+$0
+"""
+
+  "Magento 2 Table New":
+    "prefix": "2magento table new"
+    "body": """
+/**
+ * Create table '${1:table_name}'
+ */
+$table = $setup->getConnection()->newTable(
+    $setup->getTable('${1:table_name}')
+)->addColumn(
+    '${2:id}',
+    Table::TYPE_SMALLINT,
+    null,
+    ['identity' => true, 'nullable' => false, 'primary' => true],
+    '${2:id}'
+)->addIndex(
+    $setup->getIdxName('${1:table_name}', ['${2:id}']),
+    ['${2:id}']
+)->setComment(
+    '${3:description}'
+);
+
+// More columns here
+$0
+
+$setup->getConnection()->createTable($table);
+"""
+
+  "Magento 2 Test dataProvider Function":
+    "prefix": "2magento test dataProvider fn"
+    "body": """
+/**
+ * @magentoAppIsolation enabled
+ * @magentoDbIsolation enabled
+ * @dataProvider $providerName$DataProvider
+ */
+public function test${1:name}(array $data)
+{
+    // $this->assert...
+}
+
+public function ${2:providerName}DataProvider()
+{
+    return [
+        [
+            'key1' => 'value1',
+        ],
+    ];
+}
+"""
+
+  "Magento 2 Test Fixture Function":
+    "prefix": "2magento test fixture fn"
+    "body": """
+/**
+ * @magentoAppIsolation enabled
+ * @magentoDbIsolation enabled
+ * @magentoDataFixture $fixtureFile$
+ */
+public function test${1:name}()
+{
+    // $this->assert...
+}
+"""
+
+  "Magento 2 Test ObjectManager":
+    "prefix": "2magento test objectManager"
+    "body": """
+$objectManager = \Magento\TestFramework\Helper\Bootstrap::getObjectManager();
+"""

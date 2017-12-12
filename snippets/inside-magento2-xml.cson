@@ -1,0 +1,505 @@
+".text.xml:not(.source)":
+
+  "Magento 2 Disable Component Layout XML":
+    "prefix": "2magento disable js layout component xml"
+    "body": '''
+<referenceBlock name="${1:blockName}">
+    <arguments>
+        <argument name="jsLayout" xsi:type="array">
+            <item name="components" xsi:type="array">
+                <item name="${2:componentName}" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="componentDisabled" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </item>
+        </argument>
+    </arguments>
+</referenceBlock>
+'''
+
+  "Magento 2 Add Boolean Field UI XML":
+    "prefix": "2magento field boolean xml"
+    "body": '''
+<field name="${1:fieldName}">
+    <argument name="data" xsi:type="array">
+        <item name="config" xsi:type="array">
+            <item name="sortOrder" xsi:type="number">${2:sortOrder}</item>
+            <item name="dataType" xsi:type="string">boolean</item>
+            <item name="formElement" xsi:type="string">checkbox</item>
+            <item name="prefer" xsi:type="string">toggle</item>
+            <item name="label" xsi:type="string" translate="true">${3:capitalizedFieldName}</item>
+            <item name="valueMap" xsi:type="array">
+                <item name="true" xsi:type="string">1</item>
+                <item name="false" xsi:type="string">0</item>
+            </item>
+            <item name="validation" xsi:type="array">
+                <item name="required-entry" xsi:type="boolean">false</item>
+            </item>
+            <item name="default" xsi:type="string">1</item>
+        </item>
+    </argument>
+</field>
+$4
+'''
+
+  "Magento 2 Add Date Field UI XML":
+    "prefix": "2magento field date xml"
+    "body": '''
+<field name="${1:fieldName}">
+    <argument name="data" xsi:type="array">
+        <item name="config" xsi:type="array">
+            <item name="label" translate="true" xsi:type="string">${2:capitalizedFieldName}</item>
+            <item name="visible" xsi:type="boolean">true</item>
+            <item name="dataType" xsi:type="string">text</item>
+            <item name="formElement" xsi:type="string">date</item>
+            <item name="sortOrder" xsi:type="string">${3:order}</item>
+            <item name="validation" xsi:type="array">
+                <item name="validate-date" xsi:type="boolean">true</item>
+            </item>
+        </item>
+    </argument>
+</field>
+$4
+'''
+
+  "Magento 2 Add Dynamic Field UI XML":
+    "prefix": "2magento field dynamic xml"
+    "body": '''
+<dynamicRows name="${1:fieldName}">
+    <argument name="data" xsi:type="array">
+        <item name="config" xsi:type="array">
+            <item name="componentType" xsi:type="string">dynamicRows</item>
+            <item name="recordTemplate" xsi:type="string">record</item>
+            <item name="sortOrder" xsi:type="string">${2:sortOrder}</item>
+            <item name="addButton" xsi:type="boolean">true</item>
+            <item name="label" xsi:type="string" translate="true">${3:capitalizedFieldName}</item>
+            <item name="visible" xsi:type="boolean">true</item>
+            <item name="dndConfig" xsi:type="array">
+                <item name="enabled" xsi:type="boolean">true</item>
+            </item>
+        </item>
+    </argument>
+    <container name="record">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="isTemplate" xsi:type="boolean">true</item>
+                <item name="is_collection" xsi:type="boolean">true</item>
+                <item name="component" xsi:type="string">Magento_Ui/js/dynamic-rows/record</item>
+                <item name="componentType" xsi:type="string">container</item>
+                <item name="showFallbackReset" xsi:type="boolean">false</item>
+            </item>
+        </argument>
+        <field name="id">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">false</item>
+                    <item name="dataType" xsi:type="string">number</item>
+                    <item name="formElement" xsi:type="string">hidden</item>
+                    <item name="source" xsi:type="string">images_fieldset</item>
+                </item>
+            </argument>
+        </field>
+        <field name="position">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="visible" xsi:type="boolean">true</item>
+                    <item name="dataType" xsi:type="string">number</item>
+                    <item name="formElement" xsi:type="string">hidden</item>
+                    <item name="source" xsi:type="string">images_fieldset</item>
+                </item>
+            </argument>
+        </field>
+        <!-- Add your fields here -->
+        $4
+
+        <actionDelete>
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="componentType" xsi:type="string">actionDelete</item>
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="fit" xsi:type="boolean">false</item>
+                    <item name="sortOrder" xsi:type="string">50</item>
+                </item>
+            </argument>
+        </actionDelete>
+    </container>
+</dynamicRows>
+'''
+
+  "Magento 2 Add File Field UI XML":
+    "prefix": "2magento field file xml"
+    "body": '''
+<field name="${1:fieldName}">
+    <argument name="data" xsi:type="array">
+        <item name="config" xsi:type="array">
+            <!--<item name="label" translate="true" xsi:type="string">${2:capitalizedFieldName}</item>-->
+            <item name="formElement" xsi:type="string">fileUploader</item>
+            <item name="componentType" xsi:type="string">fileUploader</item>
+            <item name="notice" xsi:type="string" translate="true">Allowed file types: jpeg, gif, png</item>
+            <item name="maxFileSize" xsi:type="number">2097152</item>
+            <item name="allowedExtensions" xsi:type="string">jpg jpeg gif png</item>
+            <item name="uploaderConfig" xsi:type="array">
+                <item name="url" xsi:type="string">${3:routeId}/file/uploader</item>
+            </item>
+            <item name="sortOrder" xsi:type="string">${4:order}</item>
+        </item>
+    </argument>
+</field>
+$5
+'''
+
+  "Magento 2 Add Hidden Field UI XML":
+    "prefix": "2magento field hidden xml"
+    "body": '''
+<field name="${1:fieldName}">
+    <argument name="data" xsi:type="array">
+        <item name="config" xsi:type="array">
+            <item name="visible" xsi:type="boolean">true</item>
+            <item name="dataType" xsi:type="string">number</item>
+            <item name="formElement" xsi:type="string">hidden</item>
+            <item name="sortOrder" xsi:type="string">${2:sortOrder}</item>
+        </item>
+    </argument>
+</field>
+$3
+'''
+
+  "Magento 2 Add Integer Field UI XML":
+    "prefix": "2magento field integer xml"
+    "body": '''
+<field name="${1:fieldName}">
+    <argument name="data" xsi:type="array">
+        <item name="config" xsi:type="array">
+            <item name="visible" xsi:type="boolean">true</item>
+            <item name="dataType" xsi:type="string">number</item>
+            <item name="label" xsi:type="string">${2:capitalizedFieldName}</item>
+            <item name="formElement" xsi:type="string">input</item>
+            <item name="sortOrder" xsi:type="string">${3:order}</item>
+            <item name="default" xsi:type="number">0</item>
+            <item name="validation" xsi:type="array">
+                <item name="integer" xsi:type="boolean">true</item>
+            </item>
+        </item>
+    </argument>
+</field>
+$4
+'''
+
+  "Magento 2 Add Select Field UI XML":
+    "prefix": "2magento field select xml"
+    "body": '''
+<field name="${1:fieldId}">
+    <argument name="data" xsi:type="array">
+        <item name="options" xsi:type="object">${2:UiComponent}</item>
+        <item name="config" xsi:type="array">
+            <item name="label" translate="true" xsi:type="string">${3:capitalizedFieldName}</item>
+            <item name="dataType" xsi:type="string">text</item>
+            <item name="formElement" xsi:type="string">select</item>
+            <item name="sortOrder" xsi:type="string">${4:order}</item>
+        </item>
+    </argument>
+</field>
+$5
+'''
+
+  "Magento 2 Add Text Field UI XML":
+    "prefix": "2magento field text xml"
+    "body": '''
+<field name="${1:fieldId}">
+    <argument name="data" xsi:type="array">
+        <item name="config" xsi:type="array">
+            <item name="visible" xsi:type="boolean">true</item>
+            <item name="dataType" xsi:type="string">text</item>
+            <item name="label" translate="true" xsi:type="string">${2:capitalizedFieldName}</item>
+            <item name="formElement" xsi:type="string">input</item>
+            <item name="sortOrder" xsi:type="string">${3:order}</item>
+        </item>
+    </argument>
+</field>
+$4
+'''
+
+  "Magento 2 Add Validation Field UI XML":
+    "prefix": "2magento field validation xml"
+    "body": '''
+<item name="validation" xsi:type="array">
+    <item name="required-entry" xsi:type="boolean">true</item>
+    <!--<item name="validate-email" xsi:type="boolean">true</item>-->
+    <!--<item name="integer" xsi:type="boolean">true</item>-->
+</item>
+'''
+
+  "Magento 2 Add WYSIWYG Field UI XML":
+    "prefix": "2magento field wysiwyg xml"
+    "body": '''
+<field name="${1:fieldName}"><!-- Do not use "-" on the field name. It breaks the WYSIWYG -->
+    <argument name="data" xsi:type="array">
+        <item name="config" xsi:type="array">
+            <item name="label" xsi:type="string">${2:capitalizedFieldName}</item>
+            <item name="sortOrder" xsi:type="number">${3:order}</item>
+            <item name="formElement" xsi:type="string">wysiwyg</item>
+            <item name="wysiwyg" xsi:type="boolean">true</item>
+            <item name="wysiwygConfigData" xsi:type="array">
+                <item name="hidden" xsi:type="boolean">false</item>
+                <item name="settings" xsi:type="array">
+                    <item name="theme_advanced_buttons1" xsi:type="string">bold,italic,|,justifyleft,justifycenter,justifyright,|,fontselect,fontsizeselect,|,forecolor,backcolor,|,link,unlink,|,bullist,numlist,|,code</item>
+                    <item name="theme_advanced_buttons2" xsi:type="boolean">false</item>
+                    <item name="theme_advanced_buttons3" xsi:type="boolean">false</item>
+                    <item name="theme_advanced_buttons4" xsi:type="boolean">false</item>
+                    <item name="theme_advanced_statusbar_location" xsi:type="boolean">false</item>
+                </item>
+                <item name="files_browser_window_url" xsi:type="boolean">false</item>
+                <item name="height" xsi:type="string">100px</item>
+                <item name="toggle_button" xsi:type="boolean">false</item>
+                <item name="add_widgets" xsi:type="boolean">false</item>
+                <item name="add_variables" xsi:type="boolean">false</item>
+                <item name="add_images" xsi:type="boolean">false</item>
+            </item>
+            <item name="template" xsi:type="string">ui/form/field</item>
+            <item name="additionalClasses" xsi:type="string">admin__field-wide</item>
+        </item>
+    </argument>
+</field>
+$4
+'''
+
+  "Magento 2 Add WYSIWYG Simple UI Field XML":
+    "prefix": "2magento field wysiwyg simple xml"
+    "body": '''
+<field name="${1:fieldName}"><!-- Do not use "-" on the field name. It breaks the WYSIWYG -->
+    <argument name="data" xsi:type="array">
+        <item name="config" xsi:type="array">
+            <item name="label" xsi:type="string">${2:capitalizedFieldName}</item>
+            <item name="sortOrder" xsi:type="number">${3:order}</item>
+            <item name="formElement" xsi:type="string">wysiwyg</item>
+            <item name="wysiwyg" xsi:type="boolean">true</item>
+            <item name="wysiwygConfigData" xsi:type="array">
+                <item name="hidden" xsi:type="boolean">false</item>
+                <item name="settings" xsi:type="array">
+                    <item name="theme_advanced_buttons1" xsi:type="string">bold,italic,|,formatselect,|,link,unlink,|,bullist</item>
+                    <item name="theme_advanced_buttons2" xsi:type="boolean">false</item>
+                    <item name="theme_advanced_buttons3" xsi:type="boolean">false</item>
+                    <item name="theme_advanced_buttons4" xsi:type="boolean">false</item>
+                    <item name="theme_advanced_statusbar_location" xsi:type="boolean">false</item>
+                </item>
+                <item name="files_browser_window_url" xsi:type="boolean">false</item>
+                <item name="height" xsi:type="string">100px</item>
+                <item name="toggle_button" xsi:type="boolean">false</item>
+                <item name="add_widgets" xsi:type="boolean">false</item>
+                <item name="add_variables" xsi:type="boolean">false</item>
+                <item name="add_images" xsi:type="boolean">false</item>
+            </item>
+            <item name="template" xsi:type="string">ui/form/field</item>
+            <item name="additionalClasses" xsi:type="string">admin__field-wide</item>
+        </item>
+    </argument>
+</field>
+$4
+'''
+
+  "Magento 2 Add WYSIWYG Widget Simple UI Field XML":
+    "prefix": "2magento field wysiwyg simple + widget xml"
+    "body": '''
+<field name="${1:fieldName}"><!-- Do not use "-" on the field name. It breaks the WYSIWYG -->
+    <argument name="data" xsi:type="array">
+        <item name="config" xsi:type="array">
+            <item name="label" xsi:type="string">${2:capitalizedFieldName}</item>
+            <item name="sortOrder" xsi:type="number">${3:order}</item>
+            <item name="formElement" xsi:type="string">wysiwyg</item>
+            <item name="wysiwyg" xsi:type="boolean">true</item>
+            <item name="wysiwygConfigData" xsi:type="array">
+                <item name="hidden" xsi:type="boolean">false</item>
+                <item name="settings" xsi:type="array">
+                    <item name="theme_advanced_buttons1" xsi:type="string">magentowidget,|,bold,italic,|,formatselect,|,link,unlink,|,bullist</item>
+                    <item name="theme_advanced_buttons2" xsi:type="boolean">false</item>
+                    <item name="theme_advanced_buttons3" xsi:type="boolean">false</item>
+                    <item name="theme_advanced_buttons4" xsi:type="boolean">false</item>
+                    <item name="theme_advanced_statusbar_location" xsi:type="boolean">false</item>
+                </item>
+                <item name="files_browser_window_url" xsi:type="boolean">false</item>
+                <item name="height" xsi:type="string">100px</item>
+                <item name="toggle_button" xsi:type="boolean">false</item>
+                <item name="add_widgets" xsi:type="boolean">true</item>
+                <item name="add_variables" xsi:type="boolean">false</item>
+                <item name="add_images" xsi:type="boolean">false</item>
+            </item>
+            <item name="template" xsi:type="string">ui/form/field</item>
+            <item name="additionalClasses" xsi:type="string">admin__field-wide</item>
+        </item>
+    </argument>
+</field>
+$4
+'''
+
+  "Magento 2 Add Fieldset UI XML":
+    "prefix": "2magento fieldset xml"
+    "body": '''
+<fieldset name="${1:fieldsetId}">
+    <argument name="data" xsi:type="array">
+        <item name="config" xsi:type="array">
+            <item name="label" xsi:type="string" translate="true">${2:capitalizedFieldsetName}</item>
+            <item name="collapsible" xsi:type="boolean">true</item>
+            <item name="opened" xsi:type="boolean">false</item>
+            <item name="sortOrder" xsi:type="number">${3:order}</item>
+        </item>
+    </argument>
+    <!-- Add your fields here -->
+    $4
+</fieldset>
+'''
+
+  "Magento 2 UI Grid Boolean Column XML":
+    "prefix": "2magento ui grid boolean xml"
+    "body": '''
+<column name="${1:fieldName}">
+    <argument name="data" xsi:type="array">
+        <item name="options" xsi:type="object">Magento\Eav\Model\Entity\Attribute\Source\Boolean</item>
+        <item name="config" xsi:type="array">
+            <item name="filter" xsi:type="string">select</item>
+            <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+            <item name="editor" xsi:type="string">select</item>
+            <item name="dataType" xsi:type="string">select</item>
+            <item name="label" xsi:type="string" translate="true">${2:capitalizedFieldName}</item>
+            <item name="visible" xsi:type="boolean">true</item>
+        </item>
+    </argument>
+</column>
+$3
+'''
+
+  "Magento 2 UI Grid Date Column XML":
+    "prefix": "2magento ui grid date column xml"
+    "body": '''
+<column name="${1:fieldName}" class="Magento\Ui\Component\Listing\Columns\Date">
+    <argument name="data" xsi:type="array">
+        <item name="config" xsi:type="array">
+            <item name="filter" xsi:type="string">dateRange</item>
+            <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/date</item>
+            <item name="dataType" xsi:type="string">date</item>
+            <item name="label" xsi:type="string" translate="true">${2:capitalizedFieldName}</item>
+            <item name="visible" xsi:type="boolean">true</item>
+        </item>
+    </argument>
+</column>
+$3
+'''
+
+  "Magento 2 UI Grid Integer Column XML":
+    "prefix": "2magento ui grid integer column xml"
+    "body": '''
+<column name="${1:fieldName}">
+    <argument name="data" xsi:type="array">
+        <item name="config" xsi:type="array">
+            <item name="filter" xsi:type="string">textRange</item>
+            <item name="editor" xsi:type="array">
+                <item name="editorType" xsi:type="string">text</item>
+                <item name="validation" xsi:type="array">
+                    <item name="integer" xsi:type="boolean">true</item>
+                </item>
+            </item>
+            <item name="label" xsi:type="string" translate="true">${2:capitalizedFieldName}</item>
+            <item name="visible" xsi:type="boolean">true</item>
+        </item>
+    </argument>
+</column>
+$3
+'''
+
+  "Magento 2 UI Grid Select Column XML":
+    "prefix": "2magento ui grid select column xml"
+    "body": '''
+<column name="${1:fieldName}">
+    <argument name="data" xsi:type="array">
+        <item name="options" xsi:type="object">${2:sourceModel}</item>
+        <item name="config" xsi:type="array">
+            <item name="filter" xsi:type="string">select</item>
+            <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+            <item name="editor" xsi:type="string">select</item>
+            <item name="dataType" xsi:type="string">select</item>
+            <item name="label" xsi:type="string" translate="true">${3:capitalizedFieldName}</item>
+            <item name="visible" xsi:type="boolean">true</item>
+        </item>
+    </argument>
+</column>
+$4
+'''
+
+  "Magento 2 UI Grid Store Column XML":
+    "prefix": "2magento ui grid store column xml"
+    "body": '''
+<column name="store_id" class="Magento\Store\Ui\Component\Listing\Column\Store">
+    <argument name="data" xsi:type="array">
+        <item name="config" xsi:type="array">
+            <item name="bodyTmpl" xsi:type="string">ui/grid/cells/html</item>
+            <item name="sortable" xsi:type="boolean">false</item>
+            <item name="label" xsi:type="string" translate="true">Store View</item>
+        </item>
+    </argument>
+</column>
+$1
+'''
+
+  "Magento 2 UI Grid Text Column XML":
+    "prefix": "2magento ui grid text column xml"
+    "body": '''
+<column name="${1:fieldName}">
+    <argument name="data" xsi:type="array">
+        <item name="config" xsi:type="array">
+            <item name="filter" xsi:type="string">text</item>
+            <item name="editor" xsi:type="array">
+                <item name="editorType" xsi:type="string">text</item>
+                <!-- validators here... -->
+            </item>
+            <item name="label" xsi:type="string" translate="true">${2:capitalizedFieldName}</item>
+            <item name="visible" xsi:type="boolean">true</item>
+        </item>
+    </argument>
+</column>
+$3
+'''
+
+  "Magento 2 Module Sequence XML":
+    "prefix": "2magento sequence module xml"
+    "body": '''
+<sequence>
+    <module name="${1:VendorName_ModuleName}"/>
+</sequence>
+'''
+
+  "Magento 2 System Section XML":
+    "prefix": "2magento section system xml"
+    "body": '''
+<section id="${1:section}" translate="label" type="text" sortOrder="999" showInDefault="1" showInWebsite="0" showInStore="0">
+    <label>${2:capitalizedSection}</label>
+    <tab>${3:tab}</tab>
+    <resource>${4:resource}</resource>
+    <group id="${5:group}" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+        <label>${6:capitalizedGroup}</label>
+        <field id="${7:field}" translate="label" type="${8:type}" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+            <label>${9:capitalizedField}</label>
+<!--            <comment>Some comment here...</comment> -->
+<!--            <frontend_class>required-entry</frontend_class> -->
+        </field>
+    </group>
+</section>
+$10
+'''
+
+  "Magento 2 Widget Param Select XML":
+    "prefix": "2magento widget param select xml"
+    "body": '''
+<parameter name="${1:name}" xsi:type="select" source_model="${2:source}" visible="true" sort_order="${3:sortOrder}" >
+    <label translate="true">${4:label}</label>
+</parameter>
+$5
+'''
+
+  "Magento 2 Widget Param Text XML":
+    "prefix": "2magento widget param text xml"
+    "body": '''
+<parameter name="${1:name}" xsi:type="text" visible="true" sort_order="${2:sortOrder}" >
+    <label translate="true">${3:label}</label>
+</parameter>
+$4
+'''

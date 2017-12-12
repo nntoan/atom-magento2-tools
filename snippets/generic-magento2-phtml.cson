@@ -1,0 +1,16 @@
+".text.phtml:not(.source)":
+
+  "Magento 2 Init JS":
+    "prefix": "2magento init js"
+    "body": '''
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "${1:objectName}": {
+                "${2:option1}": "${3:value1}",
+                "${4:option2}": "${5:value2}"
+            }
+        }
+    }
+</script>
+'''

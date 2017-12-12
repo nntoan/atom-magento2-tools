@@ -1,0 +1,469 @@
+".text.php:not(.source)":
+
+  "Magento 2 Block Template":
+    "prefix": "2magento block template"
+    "body": """
+"""
+
+  "Magento 2 Block Widget":
+    "prefix": "2magento block widget"
+    "body": """
+use Magento\Framework\View\Element\Template;
+use Magento\Widget\Block\BlockInterface;
+
+class ${1:ClassName} extends Template implements BlockInterface
+{
+    /**
+     * @var string $_template
+     */
+    protected $_template = "${2:VendorName_ModuleName::template}.phtml";
+
+    // write your methods here...
+    $0
+}
+"""
+
+  "Magento 2 Controller Admin":
+    "prefix": "2magento controller admin"
+    "body": """
+use Magento\Backend\App\Action;
+use Magento\Backend\App\Action\Context;
+use Magento\Framework\View\Result\PageFactory;
+
+class ${1:className} extends Action
+{
+    /**
+     * Authorization level of a current controller admin session
+     */
+    const ADMIN_RESOURCE = '${2:VendorName_ModuleName::aclResourceName}'
+
+    /**
+     * @var PageFactory
+     */
+    protected $resultPageFactory;
+
+    /**
+     * @param Context $context
+     * @param PageFactory $resultPageFactory
+     */
+    public function __construct(
+        Context $context,
+        PageFactory $resultPageFactory
+    ) {
+        parent::__construct($context);
+        $this->resultPageFactory = $resultPageFactory;
+    }
+
+    /**
+     * Index action
+     *
+     * @return \Magento\Backend\Model\View\Result\Page
+     */
+    public function execute()
+    {
+        /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
+        $resultPage = $this->resultPageFactory->create();
+
+        return $resultPage;
+    }
+}
+"""
+
+  "Magento 2 Controller Frontend":
+    "prefix": "2magento controller front"
+    "body": """
+use Magento\Framework\App\Action\Action;
+use Magento\Framework\View\Result\PageFactory;
+use Magento\Framework\App\Action\Context;
+
+class ${1:className} extends Action
+{
+    /**
+     * @var PageFactory
+     */
+    protected $pageFactory;
+
+    /**
+     * @param Context $context
+     * @param PageFactory $pageFactory
+     */
+    public function __construct(Context $context, PageFactory $pageFactory)
+    {
+        parent::__construct($context);
+        $this->pageFactory = $pageFactory;
+    }
+
+    /**
+     * Index Action
+     *
+     * @return \Magento\Framework\View\Result\Page
+     */
+    public function execute()
+    {
+        /** @var \Magento\Framework\View\Result\Page $resultPage */
+        $resultPage = $this->pageFactory->create();
+        return $resultPage;
+    }
+}
+"""
+
+  "Magento 2 Factory Simple":
+    "prefix": "2magento factory simple"
+    "body": """
+use Magento\Framework\ObjectManagerInterface;
+
+class ${1:className}
+{
+    /**
+     * Object Manager instance
+     *
+     * @var ObjectManagerInterface
+     */
+    protected $_objectManager = null;
+
+    /**
+     * Instance name to create
+     *
+     * @var string
+     */
+    protected $_instanceName = null;
+
+    /**
+     * Factory constructor
+     *
+     * @param ObjectManagerInterface $objectManager
+     * @param string $instanceName
+     */
+    public function __construct(ObjectManagerInterface $objectManager, $instanceName = '\\${2:vendor}\\${3:module}\\${4:restNamespace}')
+    {
+        $this->_objectManager = $objectManager;
+        $this->_instanceName = $instanceName;
+    }
+
+    /**
+     * Create class instance with specified parameters
+     *
+     * @param array $data
+     * @return \${2:vendor}\${3:module}\${4:restNamespace}
+     */
+    public function create(array $data = array())
+    {
+        return $this->_objectManager->create($this->_instanceName, $data);
+    }
+}
+"""
+
+  "Magento 2 Factory Type Option":
+    "prefix": "2magento factory type option"
+    "body": """
+use InvalidArgumentException;
+use Magento\Framework\ObjectManagerInterface;
+use ${2:vendor}\${3:module}\${4:restClassType};
+
+class ${1:className}
+{
+    /**
+     * Object Manager instance
+     *
+     * @var ObjectManagerInterface
+     */
+    protected $objectManager = null;
+
+    /**
+     * Instance name to create
+     *
+     * @var string
+     */
+    protected $instanceTypeNames = [
+        '$type1$' => \${2:vendor}\${3:module}\${5:restClass}\${6:className1}::class,
+        '$type2$' => \${2:vendor}\${3:module}\${5:restClass}\${7:className2}::class,
+    ];
+
+    /**
+     * Factory constructor
+     *
+     * @param ObjectManagerInterface $objectManager
+     */
+    public function __construct(ObjectManagerInterface $objectManager)
+    {
+        $this->objectManager = $objectManager;
+    }
+
+    /**
+     * Create corresponding class instance
+     *
+     * @param $type
+     * @param array $data
+     * @return ObjectType
+     */
+    public function create($type, array $data = array())
+    {
+        if (empty($this->instanceTypeNames[$type])) {
+            throw new InvalidArgumentException(sprintf('"%s": isn\'t allowed', $type));
+        }
+
+        $resultInstance = $this->objectManager->create($this->instanceTypeNames[$type], $data);
+        if (!$resultInstance instanceof ${4:restClassType}) {
+            throw new InvalidArgumentException(sprintf('%s isn\'t instance of %s',
+                get_class($resultInstance),
+                ${4:restClassType}::class
+            ));
+        }
+
+        return $resultInstance;
+    }
+}
+"""
+
+  "Magento 2 Install Data":
+    "prefix": "2magento InstallData"
+    "body": """
+use Magento\Framework\Setup\InstallDataInterface;
+use Magento\Framework\Setup\ModuleContextInterface;
+use Magento\Framework\Setup\ModuleDataSetupInterface;
+
+/**
+ * @codeCoverageIgnore
+ */
+class InstallData implements InstallDataInterface
+{
+    /**
+     * {@inheritdoc}
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     */
+    public function install(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
+    {
+        $setup->startSetup();
+
+        // Install here your data...
+        $0
+
+        $setup->endSetup();
+    }
+}
+"""
+
+  "Magento 2 Install Schema":
+    "prefix": "2magento InstallSchema"
+    "body": """
+use Magento\Framework\DB\Ddl\Table;
+use Magento\Framework\Setup\InstallSchemaInterface;
+use Magento\Framework\Setup\SchemaSetupInterface;
+use Magento\Framework\Setup\ModuleContextInterface;
+
+/**
+ * @codeCoverageIgnore
+ */
+class InstallSchema implements InstallSchemaInterface
+{
+    /**
+     * {@inheritdoc}
+     * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
+     */
+    public function install(SchemaSetupInterface $setup, ModuleContextInterface $context)
+    {
+        $setup->startSetup();
+
+        // Install actions here...
+        $0
+
+        $setup->endSetup();
+    }
+}
+"""
+
+  "Magento 2 Helper":
+    "prefix": "2magento helper"
+    "body": """
+use Magento\Framework\App\Helper\AbstractHelper;
+
+class ${1:className} extends AbstractHelper
+{
+    $0
+}
+"""
+
+  "Magento 2 Observer":
+    "prefix": "2magento observer"
+    "body": """
+use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Event\Observer;
+
+class ${1:ClassName} implements ObserverInterface
+{
+    /**
+     * Execute Observer
+     *
+     * @param Observer $observer
+     * @return void
+     */
+    public function execute(Observer $observer)
+    {
+        $0
+    }
+}
+"""
+
+  "Magento 2 Source Option":
+    "prefix": "2magento source option"
+    "body": """
+use Magento\Framework\Data\OptionSourceInterface;
+use Magento\Framework\Option\ArrayInterface;
+
+class ${1:ClassName} implements OptionSourceInterface, ArrayInterface
+{
+    /**
+     * @var array $options
+     */
+    protected $options = [];
+
+    /**
+     * Get Options
+     *
+     * @return array
+     */
+    public function toOptionArray()
+    {
+        if (!$this->options) {
+            $this->options[] = ['value' => '', 'label' => ''];
+        }
+
+        return $this->options;
+    }
+}
+"""
+
+  "Magento 2 Setup Uninstall":
+    "prefix": "2magento setup uninstall"
+    "body": """
+use Magento\Framework\Setup\UninstallInterface;
+use Magento\Framework\Setup\SchemaSetupInterface;
+use Magento\Framework\Setup\ModuleContextInterface;
+
+class Uninstall implements UninstallInterface
+{
+    /**
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     * @param SchemaSetupInterface $setup
+     * @param ModuleContextInterface $context
+     */
+    public function uninstall(SchemaSetupInterface $setup, ModuleContextInterface $context)
+    {
+        $setup->startSetup();
+
+//        $setup->getConnection()->dropTable(
+//            $setup->getTable('table_name')
+//        );
+//
+//        $setup->getConnection()->dropColumn(
+//            $setup->getTable('table_name'),
+//            'column_name'
+//        );
+
+        $0
+
+        $setup->endSetup();
+    }
+}
+"""
+
+  "Magento 2 Test Integration Class":
+    "prefix": "2magento test integration class"
+    "body": """
+class ${1:className} extends \PHPUnit_Framework_TestCase
+{
+    /**
+     * @var \${2:VendorName}$\${3:PackageName}\${4:ClassName}
+     */
+    protected ${5:objectParam};
+
+    protected function setUp()
+    {
+        $objectManager = \Magento\TestFramework\Helper\Bootstrap::getObjectManager();
+        $this->${5:objectParam} = $objectManager->create(\${2:VendorName}$\${3:PackageName}\${4:ClassName}::class);
+    }
+
+    $0
+}
+"""
+
+  "Magento 2 Upgrade Data":
+    "prefix": "2magento UpgradeData"
+    "body": """
+use Magento\Framework\Setup\UpgradeDataInterface;
+use Magento\Framework\Setup\ModuleContextInterface;
+use Magento\Framework\Setup\ModuleDataSetupInterface;
+
+/**
+ * @codeCoverageIgnore
+ */
+class UpgradeData implements UpgradeDataInterface
+{
+    /**
+     * {@inheritdoc}
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     */
+    public function upgrade(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
+    {
+        $setup->startSetup();
+
+        if (version_compare($context->getVersion(), '${1:version}', '<')) {
+            $this->upgradeVersion${2:versionMethod}();
+        }
+
+        $setup->endSetup();
+    }
+
+    /**
+     * Upgrade script for version ${1:version}
+     *
+     * @return void
+     */
+    protected function upgradeVersion${2:versionMethod}()
+    {
+        // Add here your data upgrade
+        $0
+    }
+
+}
+"""
+
+  "Magento 2 Upgrade Schema":
+    "prefix": "2magento UpgradeSchema"
+    "body": """
+use Magento\Framework\DB\Ddl\Table;
+use Magento\Framework\Setup\UpgradeSchemaInterface;
+use Magento\Framework\Setup\ModuleContextInterface;
+use Magento\Framework\Setup\SchemaSetupInterface;
+
+/**
+ * @codeCoverageIgnore
+ */
+class UpgradeSchema implements UpgradeSchemaInterface
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function upgrade(SchemaSetupInterface $setup, ModuleContextInterface $context)
+    {
+        $setup->startSetup();
+
+        if (version_compare($context->getVersion(), '${1:version}', '<')) {
+             $this->upgradeVersion${2:versionMethod}();
+        }
+
+        $setup->endSetup();
+    }
+
+    /**
+     * Upgrade script for version ${1:version}
+     *
+     * @return void
+     */
+    protected function upgradeVersion${2:versionMethod}()
+    {
+        // Add here your schema upgrade
+        $0
+    }
+}
+"""

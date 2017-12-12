@@ -1,0 +1,27 @@
+{
+  "name": "magento2-tools",
+  "main": "./lib/magento2-snippets",
+  "version": "0.0.0",
+  "author": {
+    "name": "Toan Nguyen",
+    "email": "me@nntoan.com",
+    "url": "https://nntoan.com"
+  },
+  "bugs": {
+    "url": "https://github.com/nntoan/atom-magento2-tools/issues"
+  },
+  "description": "Magento 2 Tools is perfect for those who want to be fast and practical in Magento 2 development.",
+  "keywords": [
+    "magento2",
+    "snippet"
+  ],
+  "activationCommands": {
+    "atom-workspace": "magento2-snippets:toggle"
+  },
+  "repository": "https://github.com/nntoan/atom-magento2-tools",
+  "license": "MIT",
+  "engines": {
+    "atom": ">=0.174.0 <2.0.0"
+  },
+  "dependencies": {}
+}
