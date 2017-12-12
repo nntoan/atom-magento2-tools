@@ -1,7 +1,7 @@
 {
   "name": "magento2-tools",
   "main": "./lib/magento2-snippets",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "author": {
     "name": "Toan Nguyen",
     "email": "me@nntoan.com",
